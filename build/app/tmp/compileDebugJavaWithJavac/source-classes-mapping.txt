@@ -1,6 +1,0 @@
-io/flutter/plugins/GeneratedPluginRegistrant.java
- io.flutter.plugins.GeneratedPluginRegistrant
-com/project/moving_rating/BuildConfig.java
- com.project.moving_rating.BuildConfig
-com/project/moving_rating/MainActivity.java
- com.project.moving_rating.MainActivity
