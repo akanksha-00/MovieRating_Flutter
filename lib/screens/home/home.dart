@@ -1,6 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:moving_rating/screens/genre/comedy.dart';
-import 'package:moving_rating/screens/genre/thriller.dart';
+import 'package:moving_rating/screens/genre/display_list.dart';
 import 'package:moving_rating/services/auth.dart';
 import 'package:moving_rating/models/movies.dart';
 import 'package:moving_rating/services/database.dart';
@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.blue[100],
         appBar: AppBar(
           title: Text('Movie Rating'),
-          backgroundColor: Colors.blue[400],
+          backgroundColor: Colors.black,
           elevation: 0.0,
           actions: [
             TextButton.icon(
@@ -43,27 +43,30 @@ class _HomeState extends State<Home> {
           ],
         ),
         body: Container(
-          padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Thriller()));
-                  },
-                  child: Text('Thriller')),
-              SizedBox(
-                height: 13.0,
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Comedy()));
-                  },
-                  child: Text('Comedy')),
-            ],
-          ),
-        ));
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            color: Colors.black54,
+            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+            child: ListView.builder(
+              itemCount: genreList.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: MaterialButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              DisplayList(genre: genreList[index])));
+                    },
+                    child: Text(
+                      genreList[index],
+                      style: TextStyle(color: Colors.white, fontSize: 20.0),
+                    ),
+                    color: Colors.black54,
+                    padding: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 15.0),
+                  ),
+                );
+              },
+            )));
   }
 }

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:moving_rating/models/movies.dart';
 import 'package:moving_rating/screens/home/settings_form.dart';
 import 'package:moving_rating/services/auth.dart';
@@ -16,26 +18,29 @@ class Details extends StatefulWidget {
 class _DetailsState extends State<Details> {
   final AuthService _auth = AuthService();
 
-  void _showRating(String movie, int index) {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Container(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-              child: Settings(
-                name: movie,
-                index: index,
-              ));
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
+    void callback() {
+      setState(() {});
+    }
+
+    void _showRating(String movie, int index) {
+      showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return Container(
+                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+                child: Settings(
+                  name: movie,
+                  index: index,
+                  callback: callback,
+                ));
+          });
+    }
+
     return Scaffold(
-        backgroundColor: Colors.blue[100],
         appBar: AppBar(
           title: Text('Movie Rating'),
-          backgroundColor: Colors.blue[400],
           elevation: 0.0,
           actions: [
             TextButton.icon(
@@ -55,46 +60,73 @@ class _DetailsState extends State<Details> {
             ),
           ],
         ),
-        body: Container(
-          padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //Image.asset(name),
-              Text(
-                '${movies[widget.index].name}',
-                style: TextStyle(
-                    fontSize: 30.0,
-                    wordSpacing: 1.0,
-                    fontWeight: FontWeight.bold),
+        body: ListView(
+          children: [
+            Image.asset(
+              "images/${widget.index}.png",
+              height: 350,
+              width: 500,
+              fit: BoxFit.cover,
+            ),
+            SizedBox(
+              height: 12.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${movies[widget.index - 1].name}',
+                    style: TextStyle(
+                        fontSize: 30.0,
+                        wordSpacing: 1.0,
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.start,
+                  ),
+                  Text(
+                    '${ratingsList[widget.index - 1]} / 5.0',
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
-              SizedBox(
-                height: 12.0,
-              ),
-              Text(
-                '${movies[widget.index].description}',
+            ),
+            SizedBox(
+              height: 12.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+              child: Text(
+                '${movies[widget.index - 1].description}',
                 style: TextStyle(
                     fontSize: 15.0,
                     wordSpacing: 1.0,
                     fontWeight: FontWeight.w600),
               ),
-              SizedBox(
-                height: 12.0,
+            ),
+            SizedBox(
+              height: 12.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 20.0),
+              child: MaterialButton(
+                color: Colors.black,
+                onPressed: () => _showRating(
+                    movies[widget.index - 1].name, widget.index - 1),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(13.0, 15.0, 13.0, 15.0),
+                  child: Text(
+                    'Rate Movie',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white),
+                  ),
+                ),
               ),
-              Text(
-                'Rating : ${ratingsList[widget.index]}',
-                style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 12.0,
-              ),
-              ElevatedButton(
-                onPressed: () =>
-                    _showRating(movies[widget.index].name, widget.index),
-                child: Text('Rate Movie'),
-              )
-            ],
-          ),
+            ),
+          ],
         ));
   }
 }

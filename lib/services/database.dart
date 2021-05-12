@@ -28,22 +28,8 @@ class DatabaseServices {
         if (snapshot.data.containsKey('count'))
           countList = snapshot.data["count"];
       } else {
-        ratingsList = [
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-        ];
-        countList = [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-        ];
+        ratingsList = List.generate(movies.length, (index) => 0.0);
+        countList = List.generate(movies.length, (index) => 0);
         updateGlobalRatings();
       }
     });

@@ -10,8 +10,9 @@ import 'package:moving_rating/models/movies.dart';
 class Settings extends StatefulWidget {
   final String name;
   final int index;
+  final Function callback;
 
-  Settings({this.name, this.index});
+  Settings({this.name, this.index, this.callback});
 
   @override
   _SettingsState createState() => _SettingsState();
@@ -42,7 +43,17 @@ class _SettingsState extends State<Settings> {
               resizeToAvoidBottomInset: false,
               body: Column(
                 children: [
-                  Text('Rate movie ${widget.name}'),
+                  SizedBox(
+                    height: 25.0,
+                  ),
+                  Text(
+                    'Rate movie ${widget.name}',
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
                   TextFormField(
                     initialValue: userData.name,
                     decoration: textInputDecoration.copyWith(hintText: 'Name'),
@@ -103,7 +114,7 @@ class _SettingsState extends State<Settings> {
                             await DatabaseServices(uid: user.uid)
                                 .updateUserData(userData.movie,
                                     userData.boolMovie, _name ?? userData.name);
-
+                            widget.callback();
                             Navigator.pop(context);
 
                             print(_name);
